@@ -1,0 +1,111 @@
+<html>
+    <head>
+        <title>Sample Test</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        
+        <script>
+            $(document).ready(function(){
+                $("#itr-submit").click(function(){
+                    const formData = new FormData();
+                    var loanApplicationId = $("#itr-loanApplicationId").val();
+                    formData.append('loanApplicationId', loanApplicationId);
+                    var files = $("#itr-file01")[0].files[0];
+                    formData.append('file1', files);
+                    
+                    fetch('https://internals.fininza.in/qa/papi/itr', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => {
+                        response.json()
+                        document.getElementById("itr-response").innerHTML = response.status
+                    })
+                    .catch(error => {
+                        console.error(error)
+                    })
+                });
+                $("#bs-submit").click(function(){
+                    const formData = new FormData();
+                    var loanApplicationId = $("#bs-loanApplicationId").val();
+                    formData.append('loanApplicationId', loanApplicationId);
+                    var files = $("#bs-file01")[0].files[0];
+                    formData.append('file1', files);
+                    // for (var pair of formData.entries()) {
+                    //     console.log(pair[0]+ ', ' + pair[1]); 
+                    // }
+                    
+                    fetch('https://internals.fininza.in/qa/papi/balanceSheet', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => {
+                        response.json()
+                        // var status = response.status
+                        document.getElementById("bs-response").innerHTML = response.status
+                    })
+                    .catch(error => {
+                        console.error(error)
+                    })
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="col-sm-6">
+                <h1>ITR Document Section Upload</h1>
+                <div class="input-group">
+                    <div class="custom-file">
+                        <label class="custom-file-label">Loan Application Id </label>
+                        <input type="text" id="itr-loanApplicationId" value="BD16210001">
+                        <br>
+                        <label class="custom-file-label">Choose file 1</label>
+                        <input type="file" class="custom-file-input" id="itr-file01">
+                        <br>
+                        <label class="custom-file-label">Choose file 2</label>
+                        <input type="file" class="custom-file-input" id="itr-file02">
+                        <br>
+                        <label class="custom-file-label">Choose file 3</label>
+                        <input type="file" class="custom-file-input" id="itr-file03">
+                    </div>
+                </div>
+                <br>
+                <br>
+                <button type="submit" id="itr-submit">Upload</button>
+                <h3>Response</h3>
+                <p id="itr-response"></p>
+            </div>
+            <div class="col-sm-6">
+                <h1>Balance Sheet Section Upload</h1>
+                <div class="input-group">
+                    <div class="custom-file">
+                        <label class="custom-file-label">Loan Application Id </label>
+                        <input type="text" id="bs-loanApplicationId" value="BD16210001">
+                        <br>
+                        <label class="custom-file-label">Choose file 1</label>
+                        <input type="file" class="custom-file-input" id="bs-file01">
+                        <br>
+                        <label class="custom-file-label">Choose file 2</label>
+                        <input type="file" class="custom-file-input" id="bs-file02">
+                        <br>
+                        <label class="custom-file-label">Choose file 3</label>
+                        <input type="file" class="custom-file-input" id="bs-file03">
+                    </div>
+                </div>
+                <br>
+                <br>
+                <button type="submit" id="bs-submit">Upload</button>
+                <h3>Response</h3>
+                <p id="bs-response"></p>
+            </div>
+        </div>
+    </body>
+</html>
